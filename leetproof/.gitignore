@@ -1,0 +1,61 @@
+# Evaluation benchmarks - only ignore verina (it's a cloned git repo)
+evals/benchmarks/verina/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env*
+
+# Project specific
+.lloom/
+.logs/
+.mypy_cache/
+.pytest_cache/
+.claude/
+lake-build-out
+lsp-goal-output
+output/**
+
+# Local docs not tracked
+architecture.md
+showcase.md
+plan.md
+experiment.md
+verina_bug_report.md
+correctness_check_improvements.md

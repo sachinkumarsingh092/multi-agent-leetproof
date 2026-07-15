@@ -1,0 +1,452 @@
+{
+  "1089_duplicate-zeros": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  },
+  "1189_maximum-number-of-balloons": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "completed",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "11_container-with-most-water": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "1207_unique-number-of-occurrences": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "121_best-time-to-buy-and-sell-stock": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "completed",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "1310_xor-queries-of-a-subarray": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "completed",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "1351_count-negative-numbers-in-a-sorted-matrix": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "136_single-number": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "1539_kth-missing-positive-number": {
+    "spec_tc": "passed",
+    "typechecks": "failed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "1552_magnetic-force-between-two-balls": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "1574_shortest-subarray-to-be-removed-to-make-array-sorted": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "missing",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-failure",
+    "velvet_synth_verdict": "inv-gen-fail"
+  },
+  "167_two-sum-ii-input-array-is-sorted": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "completed",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "169_majority-element": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "1752_check-if-array-is-sorted-and-rotated": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "completed",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "191_number-of-1-bits": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  },
+  "204_count-primes": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "205_isomorphic-strings": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-failure",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  },
+  "2149_rearrange-array-elements-by-sign": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "possible-env-issue",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  },
+  "2161_partition-array-according-to-given-pivot": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "217_contains-duplicate": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "completed",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "238_product-of-array-except-self": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "completed",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "26_remove-duplicates-from-sorted-array": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "283_move-zeroes": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  },
+  "338_counting-bits": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "completed",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "33_search-in-rotated-sorted-array": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  },
+  "383_ransom-note": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "completed",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "387_first-unique-character-in-a-string": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "392_is-subsequence": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "completed",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "409_longest-palindrome": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "missing",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  },
+  "459_repeated-substring-pattern": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "completed",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "496_next-greater-element-i": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-failure",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  },
+  "50_powx-n": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "completed",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "53_maximum-subarray": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "completed",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  },
+  "567_permutation-in-string": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "missing",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-failure",
+    "velvet_synth_verdict": "inv-gen-fail"
+  },
+  "56_merge-intervals": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  },
+  "57_insert-interval": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-failure",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  },
+  "645_set-mismatch": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "completed",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  },
+  "674_longest-continuous-increasing-subsequence": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "724_find-pivot-index": {
+    "spec_tc": "passed",
+    "typechecks": "failed",
+    "dummy_invariant": true,
+    "proof": "missing",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "missing",
+    "velvet_synth_verdict": "prog-gen-fail"
+  },
+  "75_sort-colors": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "763_partition-labels": {
+    "spec_tc": "passed",
+    "typechecks": "failed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "missing",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "80_remove-duplicates-from-sorted-array-ii": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  },
+  "88_merge-sorted-array": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  },
+  "896_monotonic-array": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "completed",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "912_sort-an-array": {
+    "spec_tc": "passed",
+    "typechecks": "failed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  },
+  "917_reverse-only-letters": {
+    "spec_tc": "passed",
+    "typechecks": "failed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "completed",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  },
+  "918_maximum-sum-circular-subarray": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-failure",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  },
+  "925_long-pressed-name": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "completed",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "e2e-verified"
+  },
+  "962_maximum-width-ramp": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "missing",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "inv-gen-fail"
+  },
+  "986_interval-list-intersections": {
+    "spec_tc": "passed",
+    "typechecks": "passed",
+    "dummy_invariant": false,
+    "proof": "partial/aristotle-proven",
+    "dafny_synth": "N/A",
+    "lean_impl_proof": "partial/aristotle-proven",
+    "velvet_synth_verdict": "proof-fail (ari-verified)"
+  }
+}
