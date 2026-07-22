@@ -236,7 +236,7 @@ Examples:
     try:
         # Search (with verification by default, unless --no-verify is specified)
         verify = not args.no_verify
-        project_root = Path(__file__).parent.parent / "llmgen-experiments"
+        project_root = Path.cwd()
 
         results = await semantic_search(
             query=query,

@@ -1,0 +1,69 @@
+{
+  "total": {
+    "call_count": 15,
+    "prompt_tokens": 170484,
+    "completion_tokens": 8973,
+    "total_tokens": 179457,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "reasoning_tokens": 0,
+    "cost_usd": 0.0,
+    "model": "anthropic-claude-fable-5"
+  },
+  "by_agent": {
+    "contract_formalizer": {
+      "call_count": 2,
+      "prompt_tokens": 3893,
+      "completion_tokens": 2392,
+      "total_tokens": 6285,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 0
+    },
+    "velvet_programmer": {
+      "call_count": 2,
+      "prompt_tokens": 45520,
+      "completion_tokens": 344,
+      "total_tokens": 45864,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 0
+    },
+    "velvet_judge": {
+      "call_count": 1,
+      "prompt_tokens": 22905,
+      "completion_tokens": 1158,
+      "total_tokens": 24063,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 0
+    },
+    "velvet_invariant_inferrer": {
+      "call_count": 3,
+      "prompt_tokens": 60864,
+      "completion_tokens": 987,
+      "total_tokens": 61851,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 0
+    },
+    "proof_reasoning": {
+      "call_count": 1,
+      "prompt_tokens": 1803,
+      "completion_tokens": 1514,
+      "total_tokens": 3317,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 0
+    },
+    "prover_v2": {
+      "call_count": 6,
+      "prompt_tokens": 35499,
+      "completion_tokens": 2578,
+      "total_tokens": 38077,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 0
+    }
+  }
+}

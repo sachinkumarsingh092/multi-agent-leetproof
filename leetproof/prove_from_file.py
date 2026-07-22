@@ -229,7 +229,7 @@ def main() -> None:
     from agents.retriever_agent import RetrieverAgent
     from dbos import DBOS
     from providers import LLMConfig, ReasoningLevel
-    from tui import run
+    from runner import run
 
     config = LLMConfig(provider=args.provider, model=args.model)
     retriever = RetrieverAgent(config)

@@ -1,0 +1,15 @@
+.git
+**/.DS_Store
+**/.env
+**/.env.*
+**/.lake
+**/.lloom
+**/.orchestrator
+**/.pytest_cache
+**/.venv
+**/__pycache__
+**/*.pyc
+**/build
+**/dist
+leetproof/tests
+lean-worker/examples

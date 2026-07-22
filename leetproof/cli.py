@@ -6,23 +6,15 @@ import os
 import sys
 
 SUBCOMMANDS = {
-    "pipeline":   "Run the LLoom verification pipeline (default)",
-    "run-batch":  "Run a batch of problems from a problems.json file",
-    "gen-batch":  "Interactively generate a problems.json for run-batch",
-    "check":      "Batch typecheck & audit pipeline outputs (specs, impls, proofs, dafny)",
-    "setup":      "Download search data and pre-download embedding models",
+    "prepare":    "Expand a short request into a reviewable text specification",
+    "pipeline":   "Formalize a reviewed specification, then generate and verify code",
+    "setup":      "Check Lean and download theorem-search assets",
     "search":     "Semantic theorem search (LeanExplore)",
     "query":      "Run analytics SQL or a typed analytics query operation and print JSON",
     "lean-synth": "Standalone Lean synthesis + verification",
-    "dafny-synth":"Standalone Dafny synthesis",
     "prove-from-file": "Prove sorry'd goals in a Lean file using ProverV2",
     "get-sorried-files": "Find sorried goals in Lean files",
-    "summarize-attempts": "Summarize attempts for a specific session",
-    "effectiveness-check": "Evaluate the effectiveness of a specific agent across sessions",
     "workflows":  "Inspect DBOS workflows stored in the project SQLite DBs",
-    "replay":     "Replay a saved TUI session",
-    "aristotle-submit": "Strip sorry goals from a Lean file and submit to Aristotle",
-    "aristotle-check":  "Check pending Aristotle submissions and download solutions",
 }
 
 
@@ -42,7 +34,7 @@ def print_help():
 
 
 def run_setup():
-    """Download search data and pre-download embedding models."""
+    """Check Lean and download theorem-search assets."""
     import subprocess
 
     print("=" * 60)
@@ -81,18 +73,18 @@ def run_setup():
         print(f"   FAIL: {e}")
         failures.append("leanexplore")
 
-    # 3. Pre-download BGE embedding model
-    print("\n3. Pre-downloading BGE embedding model (~400MB)...")
+    # 3. Cache the embedding model required by LeanExplore.
+    print("\n3. Caching LeanExplore embedding model (~400MB)...")
     try:
         from sentence_transformers import SentenceTransformer
+
         model = SentenceTransformer("BAAI/bge-base-en-v1.5", device="cpu")
-        emb = model.encode(["test"])
-        assert emb.shape[1] > 0
+        model.encode(["worker setup check"])
         del model
-        print("   OK: BGE model cached")
+        print("   OK: embedding model cached")
     except Exception as e:
         print(f"   FAIL: {e}")
-        failures.append("bge-model")
+        failures.append("embedding-model")
 
     # Summary
     print("\n" + "=" * 60)
@@ -395,24 +387,14 @@ def main():
         if cmd == "setup":
             if len(sys.argv) > 2 and sys.argv[2] in ("--help", "-h"):
                 print("Usage: lloom-agent setup\n")
-                print("Download search data (LeanExplore) and pre-download embedding models.")
+                print("Check Lean and download LeanExplore search assets.")
                 return
             run_setup()
             sys.exit(0)
-        elif cmd == "run-batch":
-            _rewrite_argv("run-batch")
-            from run_batch import main as run_batch_main
-            run_batch_main()
-            return
-        elif cmd == "gen-batch":
-            _rewrite_argv("gen-batch")
-            from gen_batch import main as gen_batch_main
-            gen_batch_main()
-            return
-        elif cmd == "check":
-            _rewrite_argv("check")
-            from scripts.analyze import main as check_main
-            sys.exit(check_main() or 0)
+        elif cmd == "prepare":
+            _rewrite_argv("prepare")
+            from prepare import main as prepare_main
+            prepare_main()
             return
         elif cmd == "search":
             import asyncio
@@ -428,11 +410,6 @@ def main():
             from agents.lean_synth_and_verify import main as lean_synth_main
             lean_synth_main()
             return
-        elif cmd == "dafny-synth":
-            _rewrite_argv("dafny-synth")
-            from agents.dafny_synth import main as dafny_synth_main
-            dafny_synth_main()
-            return
         elif cmd == "prove-from-file":
             _rewrite_argv("prove-from-file")
             from prove_from_file import main as prove_from_file_main
@@ -443,33 +420,8 @@ def main():
             from scripts.get_sorried_files import main as get_sorried_files_main
             get_sorried_files_main()
             return
-        elif cmd == "summarize-attempts":
-            _rewrite_argv("summarize-attempts")
-            from scripts.summarize_attempts import main as summarize_attempts_main
-            summarize_attempts_main()
-            return
-        elif cmd == "effectiveness-check":
-            _rewrite_argv("effectiveness-check")
-            from scripts.effectiveness_check import main as effectiveness_check_main
-            effectiveness_check_main()
-            return
         elif cmd == "workflows":
             run_workflows()
-            return
-        elif cmd == "replay":
-            _rewrite_argv("replay")
-            from tui.replay import main as replay_main
-            replay_main()
-            return
-        elif cmd == "aristotle-submit":
-            _rewrite_argv("aristotle-submit")
-            from scripts.aristotle_submit import run_submit
-            run_submit()
-            return
-        elif cmd == "aristotle-check":
-            _rewrite_argv("aristotle-check")
-            from scripts.aristotle_submit import run_check
-            run_check()
             return
         elif cmd == "pipeline":
             _rewrite_argv("pipeline")

@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "session_name": "order-utilities-should-accept-term-h38wph2-",
+  "status": "SUCCESS",
+  "pipeline": {
+    "start_stage": "specgen",
+    "end_stage": "verify"
+  },
+  "input": {
+    "file": "/input/spec.txt"
+  },
+  "contract": {
+    "file": ".lloom/sessions/order-utilities-should-accept-term-h38wph2-/contracts/ShouldAcceptTerm.contract.lean",
+    "sha256": "ca09c837f41b11dc89fbe72724e075593db4267fe7f58adb484eeda7b895a808"
+  },
+  "implementation": {
+    "file": "/workspace/artifacts/ShouldAcceptTerm.lean",
+    "sha256": "ea5c6e3568a89905d9f33a1f2e5a3ea7278011d31880a550cfaba6e3952128ca"
+  },
+  "verification": {
+    "testcases_passed": true,
+    "pbt_status": "ADDED_AND_PASSED",
+    "proof_status": "PASSED",
+    "goals_proven": 0,
+    "goals_partial": 0,
+    "goals_total": 0
+  },
+  "stages": {
+    "specgen": {
+      "status": "SUCCESS",
+      "typechecks": true
+    },
+    "codegen": {
+      "status": "SUCCESS",
+      "testcases_passed": true,
+      "judge_verdict": "PASS",
+      "pbt_status": "ADDED_AND_PASSED"
+    },
+    "invgen": {
+      "status": "SUCCESS",
+      "judge_verdict": "NOT_REQUIRED"
+    },
+    "verify": {
+      "status": "SUCCESS",
+      "typechecks": true,
+      "goals_proven": 0,
+      "goals_partial": 0,
+      "goals_total": 0
+    }
+  },
+  "error": null
+}

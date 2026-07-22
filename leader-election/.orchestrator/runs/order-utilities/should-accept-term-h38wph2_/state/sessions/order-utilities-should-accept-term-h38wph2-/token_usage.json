@@ -1,0 +1,42 @@
+{
+  "total": {
+    "call_count": 5,
+    "prompt_tokens": 72417,
+    "completion_tokens": 3702,
+    "total_tokens": 76119,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "reasoning_tokens": 0,
+    "cost_usd": 0.0,
+    "model": "anthropic-claude-fable-5"
+  },
+  "by_agent": {
+    "contract_formalizer": {
+      "call_count": 2,
+      "prompt_tokens": 4071,
+      "completion_tokens": 2480,
+      "total_tokens": 6551,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 0
+    },
+    "velvet_programmer": {
+      "call_count": 2,
+      "prompt_tokens": 45524,
+      "completion_tokens": 209,
+      "total_tokens": 45733,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 0
+    },
+    "velvet_judge": {
+      "call_count": 1,
+      "prompt_tokens": 22822,
+      "completion_tokens": 1013,
+      "total_tokens": 23835,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 0
+    }
+  }
+}

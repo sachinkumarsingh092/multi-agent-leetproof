@@ -1,11 +1,10 @@
-.PHONY: build clean clean-all clean-venv clean-search install dev typecheck help setup
+.PHONY: clean clean-all clean-venv clean-search install dev typecheck help setup
 
 # Default target
 help:
 	@echo "Available targets:"
 	@echo "  setup             - Full setup from fresh clone (does everything)"
 	@echo "  install           - Install dependencies with uv"
-	@echo "  build             - Build standalone binary with PyInstaller"
 	@echo "  dev               - Install dev dependencies"
 	@echo "  typecheck         - Run type checking"
 	@echo "  clean             - Remove build artifacts and pycache"
@@ -21,17 +20,13 @@ setup:
 install:
 	uv sync
 
-# Install dev dependencies (including PyInstaller)
+# Install dev dependencies
 dev:
 	uv sync --extra dev
 
 typecheck:
 	@echo "Running type checking with ty..."
-	uvx ty check --exclude 'llmgen-experiments/CaseStudies/'
-
-# Build standalone binary
-build:
-	uv run pyinstaller lloom-agent.spec
+	uv run ty check
 
 # Clean build artifacts
 clean:

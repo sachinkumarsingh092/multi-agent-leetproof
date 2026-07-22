@@ -1,0 +1,19 @@
+=== TASK_DESCRIPTION ===
+
+Return true exactly when a natural number is evenly divisible by two. Zero is
+even. A value is even when its remainder after division by two is zero. The
+method is pure, deterministic, and total for every natural number.
+
+=== METHOD_SIGNATURE ===
+
+method isEven(value: Nat) returns (result: Bool)
+
+=== TEST_CASES ===
+
+{
+  "test_1": {"input": {"value": 0}, "expected": true},
+  "test_2": {"input": {"value": 1}, "expected": false},
+  "test_3": {"input": {"value": 2}, "expected": true},
+  "test_4": {"input": {"value": 17}, "expected": false},
+  "test_5": {"input": {"value": 100}, "expected": true}
+}

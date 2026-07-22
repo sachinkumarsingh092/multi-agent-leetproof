@@ -3,7 +3,6 @@ import json
 from enum import Enum
 from pathlib import Path
 from typing import Optional, Dict, Any
-from datetime import datetime
 from config.limits import Limits
 
 from config.constants import SESSIONS_DIR
@@ -38,6 +37,8 @@ def save_session_params(
     model: str,
     input_file: Optional[str] = None,
     output_file: Optional[str] = None,
+    start: Optional[str] = None,
+    end: Optional[str] = None,
     max_input_tokens: Optional[int] = None,
     max_output_tokens: Optional[int] = None,
     max_total_tokens: Optional[int] = None,
@@ -53,6 +54,8 @@ def save_session_params(
         model: LLM model name
         input_file: Input problem file path
         output_file: Output Lean file path
+        start: First pipeline stage
+        end: Last pipeline stage
         max_input_tokens: Token limit for input tokens
         max_output_tokens: Token limit for output tokens
         max_total_tokens: Token limit for total tokens
@@ -68,6 +71,8 @@ def save_session_params(
         "model": model,
         "input_file": input_file,
         "output_file": output_file,
+        "start": start,
+        "end": end,
         "max_input_tokens": max_input_tokens,
         "max_output_tokens": max_output_tokens,
         "max_total_tokens": max_total_tokens,
@@ -84,30 +89,31 @@ def save_session_params(
 class Stage(str, Enum):
     """Pipeline stages for sequential execution."""
 
-    SPECGEN = "specgen"  # Stage 1: Specification Generation (includes PBT)
-    CODEGEN = "codegen"  # Stage 2: Code Generation
-    INVGEN = "invgen"  # Stage 4: Invariant Generation
-    VERIFY = "verify"  # Stage 5: Verification
+    SPECGEN = "specgen"
+    CODEGEN = "codegen"
+    INVGEN = "invgen"
+    VERIFY = "verify"
 
 
 def get_parser() -> argparse.ArgumentParser:
     """Get the argument parser with all configured arguments."""
     parser = argparse.ArgumentParser(description="LLoom Agent")
 
-    # Project directory (required)
+    # Project directory
     parser.add_argument(
         "--project",
         type=str,
-        required=True,
-        help="Path to the Lean project directory (containing lakefile.lean). "
-        "All state (.sessions, logs, DB) is stored here.",
+        default=".",
+        help="Path to the Lean project directory (containing lakefile.toml or "
+        "lakefile.lean). Defaults to the current directory. All worker state "
+        "is stored under its .lloom directory.",
     )
 
     # Model provider configuration
     parser.add_argument(
         "--provider",
         type=str,
-        choices=["openai", "google", "anthropic", "ollama", "groq", "cerebras"],
+        choices=["openai", "google", "anthropic"],
         default=None,
         help="The model provider to use",
     )
@@ -119,21 +125,12 @@ def get_parser() -> argparse.ArgumentParser:
         help="The specific model to use (provider-specific, uses default if not specified)",
     )
 
-    # Specification for the program to generate (required unless using state-file)
-    parser.add_argument(
-        "--specification",
-        "-s",
-        type=str,
-        default=None,
-        help="The specification for the Velvet program to generate (required unless using --state-file)",
-    )
-
     parser.add_argument(
         "--input-file",
         "-i",
         type=str,
         default=None,
-        help="Input file path (for verification-only workflow)",
+        help="Reviewed .txt specification for specgen, or a .lean file for later stages",
     )
 
     parser.add_argument(
@@ -173,15 +170,16 @@ def get_parser() -> argparse.ArgumentParser:
         "--state-file",
         type=str,
         default=None,
-        help="Path to JSON state file for standalone agent execution (optional)",
+        help=argparse.SUPPRESS,
     )
 
     parser.add_argument(
         "--session-name",
         "-n",
         type=str,
-        default=datetime.now().strftime("%Y-%m-%d_%H-%M-%S"),
-        help="Session name for workflow identification and resumption (default: timestamp YYYY-MM-DD_HH-MM-SS)",
+        default=None,
+        help="Unique job/session identifier used for artifacts and resumption. "
+        "Pipeline runs generate one automatically when omitted.",
     )
 
     parser.add_argument(
@@ -191,13 +189,6 @@ def get_parser() -> argparse.ArgumentParser:
         help="Resume an existing workflow by session name. Requires --session-name.",
     )
 
-    parser.add_argument(
-        "--list-workflows",
-        action="store_true",
-        default=False,
-        help="List all workflows in the database and exit.",
-    )
-
     # Agent-specific context injection
     parser.add_argument(
         "--agent-context",
@@ -205,20 +196,6 @@ def get_parser() -> argparse.ArgumentParser:
         default=None,
         help="JSON mapping of agent names to context file paths. Context is injected into system prompts. "
         'Example: \'{"velvet_programmer": "prompts/velvet_documentation.md", "velvet_invariant_inferrer": "prompts/velvet_documentation.md"}\'',
-    )
-
-    parser.add_argument(
-        "--agent-type",
-        type=str,
-        default=None,
-        help="Type/name of the agent being judged (e.g., 'programmer', 'invariant_inferrer'). Used when running judge standalone.",
-    )
-
-    # Graph visualization
-    parser.add_argument(
-        "--print-graph",
-        action="store_true",
-        help="Print ASCII visualization of the workflow graph and exit",
     )
 
     # Logging configuration
@@ -259,28 +236,11 @@ def get_parser() -> argparse.ArgumentParser:
         help="Maximum cost in USD before stopping execution (default: unlimited)",
     )
 
-    # Spec PBT: property-based testing of spec during specgen loop (on by default)
-    parser.add_argument(
-        "--disable-spec-pbt",
-        action="store_true",
-        default=False,
-        help="Disable property-based testing of the specification inside the specgen loop. "
-             "By default PBT runs after each typechecked spec; if it finds a bug the spec is "
-             "rejected and regenerated without calling the coach.",
-    )
-
     parser.add_argument(
         "--prover-v2-max-iterations",
         type=int,
         default=None,
         help="Maximum tool-loop iterations for prover_v2 (default: 20)",
-    )
-    # TUI mode (enabled by default)
-    parser.add_argument(
-        "--no-tui",
-        action="store_true",
-        default=False,
-        help="Disable Terminal UI mode, use plain log output instead",
     )
 
     return parser
@@ -290,7 +250,7 @@ def merge_session_params(args: argparse.Namespace) -> None:
     """Load saved session params and merge into args (CLI args take priority).
 
     Call this after os.chdir() to the project directory so that the relative
-    ``.sessions/`` path resolves correctly.
+    ``.lloom/sessions/`` path resolves correctly.
     """
     if not (args.resume and args.session_name):
         return
@@ -305,6 +265,10 @@ def merge_session_params(args: argparse.Namespace) -> None:
         args.input_file = saved_params.get("input_file")
     if not args.output_file:
         args.output_file = saved_params.get("output_file")
+    if saved_params.get("start"):
+        args.start = saved_params["start"]
+    if "end" in saved_params:
+        args.end = saved_params["end"]
     if args.max_input_tokens is None:
         args.max_input_tokens = saved_params.get("max_input_tokens")
     if args.max_output_tokens is None:
@@ -346,11 +310,3 @@ def set_session_name(session_name: str) -> None:
     """
     args = parse_args()
     args.session_name = session_name
-
-
-def get_spec_parser() -> argparse.ArgumentParser:
-    """Get the argument parser for spec generation workflows.
-
-    This is an alias for get_parser() for backwards compatibility.
-    """
-    return get_parser()

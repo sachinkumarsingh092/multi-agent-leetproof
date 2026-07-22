@@ -1,0 +1,21 @@
+=== TASK_DESCRIPTION ===
+
+Constrain a natural-number value to the inclusive range from `lower` to
+`upper`. The caller guarantees `lower <= upper`. Return `lower` when the value
+is smaller than the range, `upper` when it is larger, and the original value
+when it is inside the range. Both boundaries are inclusive. The method is pure
+and deterministic and does not modify any input.
+
+=== METHOD_SIGNATURE ===
+
+method clamp(value: Nat, lower: Nat, upper: Nat) returns (result: Nat)
+
+=== TEST_CASES ===
+
+{
+  "test_1": {"input": {"value": 2, "lower": 5, "upper": 10}, "expected": 5},
+  "test_2": {"input": {"value": 12, "lower": 5, "upper": 10}, "expected": 10},
+  "test_3": {"input": {"value": 7, "lower": 5, "upper": 10}, "expected": 7},
+  "test_4": {"input": {"value": 5, "lower": 5, "upper": 10}, "expected": 5},
+  "test_5": {"input": {"value": 0, "lower": 0, "upper": 0}, "expected": 0}
+}

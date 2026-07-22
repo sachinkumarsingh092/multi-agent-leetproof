@@ -448,7 +448,7 @@ theorem drop_thm : False := sorry
     assert "drop_me" not in result
     assert "drop_thm" not in result
 
-def test_parse_lean_decls_complex_mbpp_sample():
+def test_parse_lean_decls_complex_program_sample():
     code = """
 import Auto
 
@@ -456,7 +456,7 @@ open PartialCorrectness DemonicChoice Lean.Elab.Term.DoNames
 
 set_option auto.smt.trust true
 
--- MBPP Problem 24: Convert a binary number to its decimal equivalent
+-- Convert a binary number to its decimal equivalent
 -- Some comments that should be stripped
 
 @[loomAbstractionSimp]
@@ -493,7 +493,7 @@ abbrev test_alias := test_helper
 unknown_command my_command (x : Nat) := x + 1
 """
     
-    def my_filter_map_mbpp(node):
+    def custom_filter_map(node):
         # Filter out anything with "test" prefix
         if node.name.startswith("test"):
             return None
@@ -514,7 +514,7 @@ unknown_command my_command (x : Nat) := x + 1
             
         return None 
         
-    result = "\n".join(parse_lean_decls(code, my_filter_map_mbpp))
+    result = "\n".join(parse_lean_decls(code, custom_filter_map))
     
     # Assertions for expected included items
     expected_digitsReverseStr = textwrap.dedent("""@[loomAbstractionSimp]

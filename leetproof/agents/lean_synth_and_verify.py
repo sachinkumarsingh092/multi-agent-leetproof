@@ -1228,7 +1228,7 @@ import Extensions.VelvetPBT
 async def run_from_spec(
     input_file: str,
     output_file: str,
-    agent: Optional["LeanSynthAndVerifyAgent"] = None,
+    agent: "LeanSynthAndVerifyAgent",
 ) -> dict:
     """Run synthesis and verification from a spec file.
 
@@ -1237,7 +1237,7 @@ async def run_from_spec(
     Args:
         input_file: Path to the spec file
         output_file: Path to write the implementation
-        agent: Optional agent instance. If not provided, gets from container.
+        agent: Initialized standalone synthesis agent.
     """
     from tools.common import set_allowed_output_files
 
@@ -1260,12 +1260,6 @@ async def run_from_spec(
         "continuation_ctx": {},
         "pbt_status": PBTStatus.NOT_ATTEMPTED,
     }
-
-    # Use provided agent or get from container
-    if agent is None:
-        from container import get_container
-        container = get_container()
-        agent = container.lean_synth
 
     return await agent.run_workflow(state)
 
@@ -1326,7 +1320,7 @@ def main():
     """CLI entry point with proper DBOS initialization."""
     import os
     import sys
-    from tui import run
+    from runner import run
     from agents.base import BaseAgent
     from args import parse_args, merge_session_params
     from config.constants import SESSIONS_DIR
@@ -1458,9 +1452,7 @@ def main():
 
 
 if __name__ == "__main__":
-    # For standalone execution, use scripts/run_lean_synth.py instead
-    # Running this file directly causes DBOS registration issues
-    print("Please use: uv run lean_synth_and_verify.py [args]")
+    print("Please use: lloom-agent lean-synth [args]")
     print("Running this file directly causes DBOS class registration issues.")
     import sys
     sys.exit(1)

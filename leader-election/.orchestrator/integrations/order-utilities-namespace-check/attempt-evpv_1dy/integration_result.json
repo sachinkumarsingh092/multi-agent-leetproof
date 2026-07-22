@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "job_id": "order-utilities-namespace-check",
+  "status": "FAILED",
+  "modules": [
+    {
+      "task_id": "CountVotesForCandidate",
+      "module": "CountVotesForCandidate",
+      "namespace": "Generated.CountVotesForCandidate",
+      "file": "/Users/sachinsingh/dev/sachinkumarsingh092/leanlang/leetproof/leader-election/.orchestrator/integrations/order-utilities-namespace-check/attempt-evpv_1dy/CountVotesForCandidate.lean",
+      "source_sha256": "37bf41a9739b5099f58e946b91268e824a78d226bdfb0754bcfdd9c9ea70184b",
+      "sha256": "c8c22d02beb9d36c1a58655e452b87f6a7db9119b0bc0c891c1894a460105f40"
+    },
+    {
+      "task_id": "ElectLeaderByMaxId",
+      "module": "ElectLeaderByMaxId",
+      "namespace": "Generated.ElectLeaderByMaxId",
+      "file": "/Users/sachinsingh/dev/sachinkumarsingh092/leanlang/leetproof/leader-election/.orchestrator/integrations/order-utilities-namespace-check/attempt-evpv_1dy/ElectLeaderByMaxId.lean",
+      "source_sha256": "7f63718b6e0b6c6c5ce91ced6c801f9afc32c0b6406d5a6455a1bfc2d64acf9e",
+      "sha256": "8e94c1df525648e1291c40883d31fd63b3644ccdba7bba34d4569b2636507d1e"
+    },
+    {
+      "task_id": "FilterAliveNodes",
+      "module": "FilterAliveNodes",
+      "namespace": "Generated.FilterAliveNodes",
+      "file": "/Users/sachinsingh/dev/sachinkumarsingh092/leanlang/leetproof/leader-election/.orchestrator/integrations/order-utilities-namespace-check/attempt-evpv_1dy/FilterAliveNodes.lean",
+      "source_sha256": "a7716eb149636846e324db1b29bd744736da2a283ab9de8dd49696401949716f",
+      "sha256": "68ff9940ed83adbbeba1ddfad889a49f323b8654fd826331b656193b292f4c89"
+    },
+    {
+      "task_id": "HasMajority",
+      "module": "HasMajority",
+      "namespace": "Generated.HasMajority",
+      "file": "/Users/sachinsingh/dev/sachinkumarsingh092/leanlang/leetproof/leader-election/.orchestrator/integrations/order-utilities-namespace-check/attempt-evpv_1dy/HasMajority.lean",
+      "source_sha256": "326281da6f353a75815868dec842eb3bc80a71226237271d8cf5ae24862d367c",
+      "sha256": "1748d0831a382f46012e0500342a6f025438c71919582771b03f3e0ed83e5a5e"
+    },
+    {
+      "task_id": "NextNodeInRing",
+      "module": "NextNodeInRing",
+      "namespace": "Generated.NextNodeInRing",
+      "file": "/Users/sachinsingh/dev/sachinkumarsingh092/leanlang/leetproof/leader-election/.orchestrator/integrations/order-utilities-namespace-check/attempt-evpv_1dy/NextNodeInRing.lean",
+      "source_sha256": "118bbf68819db223edfa7f2fc018d30b8e2524833ecd2c9f782c067c7956a74e",
+      "sha256": "9031594ef01561c0957a04c2e7875072811a06e7bfafe5a5ef33269885788569"
+    },
+    {
+      "task_id": "ShouldAcceptTerm",
+      "module": "ShouldAcceptTerm",
+      "namespace": "Generated.ShouldAcceptTerm",
+      "file": "/Users/sachinsingh/dev/sachinkumarsingh092/leanlang/leetproof/leader-election/.orchestrator/integrations/order-utilities-namespace-check/attempt-evpv_1dy/ShouldAcceptTerm.lean",
+      "source_sha256": "ea5c6e3568a89905d9f33a1f2e5a3ea7278011d31880a550cfaba6e3952128ca",
+      "sha256": "7a4d1ccd11d649ee65f2e14536a98208de2486415930cb6869a953f901b6e532"
+    }
+  ],
+  "import_file": "/Users/sachinsingh/dev/sachinkumarsingh092/leanlang/leetproof/leader-election/.orchestrator/integrations/order-utilities-namespace-check/attempt-evpv_1dy/All.lean",
+  "import_sha256": "65a22bd45d45a13bc76fc3d46136a4a53a9a3d4f5b72389504ba5e43f4ab06ec",
+  "verification_script_sha256": "21a2131ed47ed41fcf4fcf80cc825de75a5e53003d35e3cfd946a159bc814466",
+  "error": {
+    "type": "LeanIntegrationFailure",
+    "message": "Lean integration exited with code 1"
+  }
+}

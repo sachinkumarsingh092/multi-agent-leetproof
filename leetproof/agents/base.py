@@ -856,7 +856,7 @@ class BaseAgent(ABC, DBOSConfiguredInstance):
             if __name__ == "__main__":
                 MyAgent.main()
         """
-        from tui import run
+        from runner import run
         from args import get_args, merge_session_params
         from config.constants import SESSIONS_DIR
         import os

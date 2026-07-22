@@ -1,6 +1,3 @@
-# Evaluation benchmarks - only ignore verina (it's a cloned git repo)
-evals/benchmarks/verina/
-
 # Python
 __pycache__/
 *.py[cod]
@@ -56,6 +53,4 @@ output/**
 architecture.md
 showcase.md
 plan.md
-experiment.md
-verina_bug_report.md
 correctness_check_improvements.md

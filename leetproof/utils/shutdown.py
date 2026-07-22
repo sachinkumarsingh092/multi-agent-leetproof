@@ -12,8 +12,8 @@ logger = get_logger(__name__)
 # Global shutdown state
 _shutdown_requested = threading.Event()
 # We might not want to run shutdown hooks (that do some stuff to handle things gracefully) for all kinds of errors.
-# Example: If pantograph failed, doing this means we mess up teh file state and replay gets broken..
-# Similar for keyboard interrupts and all in my opinion.
+# For example, running mutation hooks after an internal Pantograph failure can
+# leave file state inconsistent for DBOS replay.
 # Only place we do want to do run the shutdown hooks is for token limit exceeded and all.
 _should_run_hooks : bool = True
 _shutdown_reason: Optional[str] = None
@@ -188,8 +188,7 @@ def handle_shutdown_if_requested(context: str = "") -> None:
     1. Runs registered shutdown hooks
     2. Closes LSP connections
     3. Saves token usage to session
-    4. Saves TUI state
-    5. Exits the process with code 130 (SIGINT convention)
+    4. Exits the process with code 130 (SIGINT convention)
 
     This leaves the DBOS workflow in PENDING state, allowing it to be
     resumed later. On resume, completed steps return cached results.
@@ -240,28 +239,6 @@ def handle_shutdown_if_requested(context: str = "") -> None:
         logger.info("Token usage saved")
     except Exception as e:
         logger.warning(f"Failed to save token usage: {e}")
-
-    # Save TUI state if available
-    try:
-        from tui.log_handler import get_tui_log_handler
-        from tui.snapshot import TUISnapshot
-        from tui.app import build_params_dict
-        from args import get_args
-        from config.constants import SESSIONS_DIR
-        from pathlib import Path
-
-        args = get_args()
-        if args.session_name:
-            session_dir = Path(SESSIONS_DIR) / args.session_name
-            handler = get_tui_log_handler()
-            tracker = get_token_tracker()
-            params = build_params_dict()
-
-            snapshot = TUISnapshot.from_tracker(params, tracker, handler.get_logs())
-            snapshot.save(session_dir)
-            logger.info(f"TUI state saved to {session_dir}")
-    except Exception as e:
-        logger.warning(f"Failed to save TUI state: {e}")
 
     logger.info("Exiting process - workflow will remain PENDING for resume")
     logger.info("To resume, re-run the same command with --resume")

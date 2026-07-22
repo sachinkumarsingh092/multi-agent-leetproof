@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "job_id": "order-utilities",
+  "tasks": [
+    {
+      "id": "filter-alive-nodes",
+      "input_file": "specs/filter-alive-nodes.txt",
+      "input_sha256": "9e9cbfff4502cfd376b4efb6bd6fe4b2370612b19e297ca732c1113d71c6ac55",
+      "output_file": "artifacts/FilterAliveNodes.lean",
+      "depends_on": []
+    },
+    {
+      "id": "elect-leader-by-max-id",
+      "input_file": "specs/elect-leader-by-max-id.txt",
+      "input_sha256": "96f464b26f91e0b37509ab65417139cda94e5ad007c733808ef94040d898ba13",
+      "output_file": "artifacts/ElectLeaderByMaxId.lean",
+      "depends_on": []
+    },
+    {
+      "id": "count-votes-for-candidate",
+      "input_file": "specs/count-votes-for-candidate.txt",
+      "input_sha256": "7db16f95ccc4a8703eafe568aba0d38eb3623a4e196b423c2cb453d6aabca9b1",
+      "output_file": "artifacts/CountVotesForCandidate.lean",
+      "depends_on": []
+    },
+    {
+      "id": "has-majority",
+      "input_file": "specs/has-majority.txt",
+      "input_sha256": "c7ada7d7878238ace755ef532fe39de61587e2ce8998d97cf142d8c92861319e",
+      "output_file": "artifacts/HasMajority.lean",
+      "depends_on": []
+    },
+    {
+      "id": "next-node-in-ring",
+      "input_file": "specs/next-node-in-ring.txt",
+      "input_sha256": "c4ae53beb8b96aeede92059d1cd1d517563f0a9a2dcc6602e1240558f5db5bb3",
+      "output_file": "artifacts/NextNodeInRing.lean",
+      "depends_on": []
+    },
+    {
+      "id": "should-accept-term",
+      "input_file": "specs/should-accept-term.txt",
+      "input_sha256": "225a3df7d201e3ca86736d32f0bfbb131351d10402d3e279402235c93df300a0",
+      "output_file": "artifacts/ShouldAcceptTerm.lean",
+      "depends_on": []
+    }
+  ]
+}

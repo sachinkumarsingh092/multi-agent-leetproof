@@ -18,7 +18,6 @@ TPayload = TypeVar("TPayload")
 
 QUERY_OPERATION_MODULES = (
     "utils.analytics.general",
-    "utils.analytics.spec_generation",
     "utils.analytics.velvet_programmer",
     "utils.analytics.velvet_invariant_inferrer",
     "utils.analytics.lean_synth_and_verify",

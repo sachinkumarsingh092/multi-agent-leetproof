@@ -18,8 +18,6 @@ class Limits:
     # Agent-specific attempt limits
     VELVET_PROGRAMMER_MAX_ATTEMPTS = 15  # Max attempts for programmer agent
     VELVET_INVARIANT_MAX_ATTEMPTS = 15  # Max attempts for invariant inferrer
-    SPEC_GEN_MAX_ATTEMPTS = 10          # Max attempts for spec generation
-    EXAMPLE_PROVER_MAX_ATTEMPTS = 10    # Max attempts for example prover
     
     # Proof search limits
     PROVER_MAX_DEPTH = 4                # Max depth for proof decomposition
@@ -37,10 +35,6 @@ class Limits:
     
     # Judge invocation
     JUDGE_MAX_ITERATIONS = 5            # Max tool iterations for judge agent
-    
+
     # Message and output limits
     MAX_DIAGNOSTIC_MESSAGE_LENGTH = 1000  # Max characters for diagnostic messages
-    
-    # TUI/logging
-    MAX_LOGS_KEPT = 10000               # Max log lines to keep in TUI state
-    MAX_LOGS_IN_MEMORY = 50000          # Max log lines in memory

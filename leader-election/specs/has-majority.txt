@@ -1,0 +1,16 @@
+=== TASK_DESCRIPTION ===
+Implement the quorum check for leader election: a candidate wins only with a strict majority of the total cluster size.
+
+Input: voteCount (Nat), the number of votes the candidate received, and totalNodes (Nat), the total number of nodes in the cluster.
+
+Output: Bool. Return true if and only if 2 * voteCount > totalNodes (strict majority). Note this must be computed with natural-number arithmetic; do not use division that could truncate incorrectly.
+
+Preconditions: voteCount <= totalNodes. totalNodes may be 0, in which case the result must be false.
+
+Edge cases: totalNodes = 0 returns false; an exact half (e.g., 2 of 4) is NOT a majority and returns false; 3 of 5 returns true; 1 of 1 returns true.
+
+Determinism: the function is pure; identical inputs always produce identical outputs.
+=== METHOD_SIGNATURE ===
+method hasMajority (voteCount : Nat) (totalNodes : Nat) : Bool
+=== TEST_CASES ===
+{"tests": [{"input": {"voteCount": 3, "totalNodes": 5}, "expected": true}, {"input": {"voteCount": 2, "totalNodes": 4}, "expected": false}, {"input": {"voteCount": 0, "totalNodes": 0}, "expected": false}, {"input": {"voteCount": 1, "totalNodes": 1}, "expected": true}, {"input": {"voteCount": 2, "totalNodes": 5}, "expected": false}, {"input": {"voteCount": 5, "totalNodes": 9}, "expected": true}]}

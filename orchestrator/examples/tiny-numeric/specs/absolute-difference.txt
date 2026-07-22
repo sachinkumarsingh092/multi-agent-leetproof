@@ -1,0 +1,20 @@
+=== TASK_DESCRIPTION ===
+
+Implement a pure function that returns the absolute difference between two
+natural numbers. The result is `left - right` when `left >= right`; otherwise
+it is `right - left`. The result is always non-negative, the inputs are not
+modified, and evaluation is deterministic. Equal inputs return zero. The
+implementation must work for zero and has no upper bound beyond `Nat`.
+
+=== METHOD_SIGNATURE ===
+
+method absoluteDifference(left: Nat, right: Nat) returns (result: Nat)
+
+=== TEST_CASES ===
+
+{
+  "test_1": {"input": {"left": 9, "right": 4}, "expected": 5},
+  "test_2": {"input": {"left": 4, "right": 9}, "expected": 5},
+  "test_3": {"input": {"left": 7, "right": 7}, "expected": 0},
+  "test_4": {"input": {"left": 0, "right": 6}, "expected": 6}
+}

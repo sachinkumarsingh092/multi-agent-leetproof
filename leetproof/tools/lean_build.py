@@ -73,9 +73,9 @@ def lean_build_file_helper(
         from config.timeouts import Timeouts
         build_timeout = Timeouts.LEAN_BUILD if timeout_seconds is None else timeout_seconds
 
-        # Run lake build in a new process group so we can kill all children on timeout
+        # Type-check an arbitrary source path in the Lake environment.
         process = subprocess.Popen(
-            ["lake", "build", file_path],
+            ["lake", "env", "lean", file_path],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
@@ -189,6 +189,7 @@ def lean_build_file_helper(
 
         if validation_error:
             logger.info(f"⚠ Build validation failed: {validation_error}")
+            build_output += f"\n\nValidation failed: {validation_error}"
 
         separator = "=" * 60
         build_lines = build_output.splitlines()
@@ -201,6 +202,7 @@ def lean_build_file_helper(
         return LakeBuildResult(
             typechecks=typechecks,
             diagnostics=diagnostics_with_context,
+            build_log=build_output,
         )
 
     except Exception as e:

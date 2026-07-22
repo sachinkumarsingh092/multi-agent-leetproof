@@ -8,13 +8,13 @@ set -euo pipefail
 # This handles:
 #   1. System deps + uv + Python deps for leetproof/
 #   2. elan + Lean toolchain
-#   3. Lean project build for llmgen-experiment/
-#   4. Search data + embedding models (via leetproof/cli.py setup)
+#   3. Lean project build for lean-worker/
+#   4. Lean theorem-search data and embedding model (via leetproof/cli.py setup)
 # =============================================================================
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TOOL_DIR="${ROOT_DIR}/leetproof"
-LEAN_PROJECT_DIR="${ROOT_DIR}/llmgen-experiment"
+LEAN_PROJECT_DIR="${ROOT_DIR}/lean-worker"
 
 # Colors
 RED='\033[0;31m'
@@ -40,7 +40,7 @@ fi
 
 if [ ! -f "${LEAN_PROJECT_DIR}/lakefile.toml" ] && [ ! -f "${LEAN_PROJECT_DIR}/lakefile.lean" ]; then
     err "Expected Lean project at ${LEAN_PROJECT_DIR}"
-    err "This repository should already contain llmgen-experiment/; no submodule init is performed."
+    err "This repository should already contain lean-worker/."
     exit 1
 fi
 
@@ -52,7 +52,7 @@ fi
 LEAN_TOOLCHAIN="$(tr -d '\n' < "${LEAN_PROJECT_DIR}/lean-toolchain")"
 LEAN_VERSION="${LEAN_TOOLCHAIN##*:}"
 
-ok "Found leetproof/ and llmgen-experiment/"
+ok "Found leetproof/ and lean-worker/"
 ok "Lean toolchain: ${LEAN_TOOLCHAIN}"
 
 # =============================================================================
@@ -139,7 +139,7 @@ fi
 # =============================================================================
 # 5. Build Lean project
 # =============================================================================
-step "Building Lean project (llmgen-experiment/)"
+step "Building Lean project (lean-worker/)"
 
 if [ -d "${LEAN_PROJECT_DIR}/.lake/build" ] && [ -d "${LEAN_PROJECT_DIR}/.lake/packages" ]; then
     ok "Lean project already built"
@@ -152,11 +152,11 @@ else
 fi
 
 # =============================================================================
-# 6. Setup search data + embedding models
+# 6. Setup theorem-search assets
 # =============================================================================
-step "Setting up search tools and models"
+step "Setting up theorem-search assets"
 
-echo "    This downloads Loogle (~100MB), LeanExplore (~8GB), and BGE model (~400MB)"
+echo "    This downloads LeanExplore data (~8GB) and its embedding model (~400MB)"
 (cd "${TOOL_DIR}" && uv run python cli.py setup)
 
 # =============================================================================

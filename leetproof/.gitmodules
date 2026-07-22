@@ -1,4 +1,0 @@
-[submodule "llmgen-experiments"]
-	path = llmgen-experiments
-	url = https://github.com/verse-lab/llmgen-experiments.git
-	branch = basic-template

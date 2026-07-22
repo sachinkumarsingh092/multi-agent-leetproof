@@ -1,6 +1,7 @@
 """Build and diagnostics utilities for Lean files."""
 
 import json
+import re
 from pathlib import Path
 from typing import List, Callable
 
@@ -207,7 +208,7 @@ async def get_diagnostics(
 
 
 def parse_lake_build_output(build_output: str, file_path: str, truncate_messages: bool = True) -> List[dict]:
-    """Parse lake build output into diagnostic dictionaries.
+    """Parse Lake- and Lean-formatted output into diagnostic dictionaries.
 
     Args:
         build_output: Raw output from lake build command
@@ -217,61 +218,58 @@ def parse_lake_build_output(build_output: str, file_path: str, truncate_messages
     Returns:
         List of diagnostic dicts with keys: severity, message, line, column
     """
+    def parse_header(line: str) -> tuple[str, str, int, int, str] | None:
+        severity_first = re.match(
+            r"^(warning|error|info): (.+):(\d+):(\d+):\s?(.*)$",
+            line,
+        )
+        if severity_first:
+            severity, diag_file, line_no, col_no, message = (
+                severity_first.groups()
+            )
+            return severity, diag_file, int(line_no), int(col_no), message
+
+        file_first = re.match(
+            r"^(.+):(\d+):(\d+): (warning|error|info):\s?(.*)$",
+            line,
+        )
+        if file_first:
+            diag_file, line_no, col_no, severity, message = file_first.groups()
+            return severity, diag_file, int(line_no), int(col_no), message
+        return None
+
     diagnostics = []
     lines = build_output.split('\n')
     i = 0
 
     while i < len(lines):
-        line = lines[i]
-
-        if line.startswith('warning: ') or line.startswith('error: ') or line.startswith('info: '):
-            if line.startswith('warning: '):
-                severity = 'warning'
-            elif line.startswith('error: '):
-                severity = 'error'
-            else:
-                severity = 'info'
-
-            rest = line[len(severity) + 2:]
-            parts = rest.split(':', 3)
-
-            if len(parts) >= 4:
-                diag_file = parts[0]
-                try:
-                    line_no = int(parts[1])
-                    col_no = int(parts[2])
-                    message_first = parts[3].strip()
-                except ValueError:
-                    i += 1
-                    continue
-
-                message_lines = [message_first] if message_first else []
-                i += 1
-
-                while i < len(lines):
-                    next_line = lines[i]
-                    if next_line.startswith('warning: ') or next_line.startswith('error: ') or next_line.startswith('info: '):
-                        break
-                    message_lines.append(next_line)
-                    i += 1
-
-                full_message = '\n'.join(message_lines).strip()
-                # Truncate if enabled
-                if truncate_messages:
-                    from config.limits import Limits
-                    if len(full_message) > Limits.MAX_DIAGNOSTIC_MESSAGE_LENGTH:
-                        full_message = full_message[:Limits.MAX_DIAGNOSTIC_MESSAGE_LENGTH] + "...TRUNCATED"
-
-                if diag_file == file_path:
-                    diagnostics.append({
-                        'severity': severity,
-                        'message': full_message,
-                        'line': line_no,
-                        'column': col_no
-                    })
-            else:
-                i += 1
-        else:
+        header = parse_header(lines[i])
+        if header is None:
             i += 1
+            continue
+
+        severity, diag_file, line_no, col_no, message_first = header
+        message_lines = [message_first] if message_first else []
+        i += 1
+        while i < len(lines) and parse_header(lines[i]) is None:
+            message_lines.append(lines[i])
+            i += 1
+
+        full_message = '\n'.join(message_lines).strip()
+        if truncate_messages:
+            from config.limits import Limits
+            if len(full_message) > Limits.MAX_DIAGNOSTIC_MESSAGE_LENGTH:
+                full_message = (
+                    full_message[:Limits.MAX_DIAGNOSTIC_MESSAGE_LENGTH]
+                    + "...TRUNCATED"
+                )
+
+        if Path(diag_file).resolve() == Path(file_path).resolve():
+            diagnostics.append({
+                'severity': severity,
+                'message': full_message,
+                'line': line_no,
+                'column': col_no
+            })
 
     return diagnostics

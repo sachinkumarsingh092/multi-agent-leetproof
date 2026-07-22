@@ -3,7 +3,7 @@ import asyncio
 import json
 from functools import wraps
 from pathlib import Path
-from typing import Any, Dict, Optional, Callable
+from typing import Any, Callable, Dict, Optional, cast
 from langchain_core.callbacks import BaseCallbackHandler
 from langchain_core.outputs import LLMResult
 from config.constants import SESSIONS_DIR
@@ -311,7 +311,7 @@ class TokenUsageTracker(BaseCallbackHandler):
                     if hasattr(message, 'response_metadata'):
                         logger.info(f"[DEBUG] response_metadata: {message.response_metadata}")
                     if hasattr(message, 'usage_metadata') and message.usage_metadata:
-                        usage: dict = message.usage_metadata  # type: ignore[assignment]
+                        usage = cast(dict[str, Any], message.usage_metadata)
                         logger.info(f"[DEBUG] usage_metadata: {usage}")
                         prompt_tokens = usage.get("input_tokens", 0)
                         completion_tokens = usage.get("output_tokens", 0)

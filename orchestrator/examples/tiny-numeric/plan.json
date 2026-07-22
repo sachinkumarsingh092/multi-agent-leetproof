@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "project_id": "tiny-numeric",
+  "source_file": "project.txt",
+  "source_sha256": "271489deaef08dd7254e1ff05c834d742ef0e34c97988ed8ce28bcd48c0da2dd",
+  "tasks": [
+    {
+      "id": "absolute-difference",
+      "input_file": "specs/absolute-difference.txt",
+      "output_file": "artifacts/AbsoluteDifference.lean",
+      "depends_on": []
+    },
+    {
+      "id": "clamp",
+      "input_file": "specs/clamp.txt",
+      "output_file": "artifacts/Clamp.lean",
+      "depends_on": []
+    },
+    {
+      "id": "is-even",
+      "input_file": "specs/is-even.txt",
+      "output_file": "artifacts/IsEven.lean",
+      "depends_on": []
+    }
+  ]
+}

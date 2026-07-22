@@ -1,3 +1,11 @@
+import asyncio
+import threading
+import time
+from types import SimpleNamespace
+
+import pytest
+
+import utils.lean_explore_service as lean_explore_service
 from utils.lean_explore_service import (
     _LeanExploreDbMetadata,
     _LeanExploreDeclCategory,
@@ -75,3 +83,95 @@ class TestLeanExploreResultFiltering:
                 category=_LeanExploreDeclCategory.THEOREM,
             )
         ) is None
+
+
+class TestLeanExploreConcurrency:
+    @pytest.mark.asyncio
+    async def test_concurrent_searches_enter_shared_service_one_at_a_time(
+        self, monkeypatch
+    ):
+        state_lock = threading.Lock()
+        active_calls = 0
+        max_active_calls = 0
+
+        class FakeService:
+            def search(self, **_kwargs):
+                nonlocal active_calls, max_active_calls
+                with state_lock:
+                    active_calls += 1
+                    max_active_calls = max(max_active_calls, active_calls)
+                time.sleep(0.05)
+                with state_lock:
+                    active_calls -= 1
+                return SimpleNamespace(results=[])
+
+        monkeypatch.setattr(lean_explore_service, "_service", FakeService())
+        monkeypatch.setattr(
+            lean_explore_service,
+            "_search_circuit_open",
+            threading.Event(),
+        )
+
+        await asyncio.gather(
+            lean_explore_service.semantic_search("first query"),
+            lean_explore_service.semantic_search("second query"),
+        )
+
+        assert max_active_calls == 1
+
+    @pytest.mark.asyncio
+    async def test_search_timeout_opens_circuit_for_later_calls(
+        self, monkeypatch
+    ):
+        search_calls = 0
+
+        class SlowService:
+            def search(self, **_kwargs):
+                nonlocal search_calls
+                search_calls += 1
+                time.sleep(0.05)
+                return SimpleNamespace(results=[])
+
+        circuit = threading.Event()
+        monkeypatch.setattr(lean_explore_service, "_service", SlowService())
+        monkeypatch.setattr(
+            lean_explore_service,
+            "_search_circuit_open",
+            circuit,
+        )
+        monkeypatch.setattr(
+            lean_explore_service.Timeouts,
+            "LEAN_EXPLORE_SEARCH",
+            0.01,
+        )
+
+        assert await lean_explore_service.semantic_search("slow query") == []
+        assert circuit.is_set()
+        assert await lean_explore_service.semantic_search("skipped query") == []
+        assert search_calls == 1
+        await asyncio.sleep(0.05)
+
+    @pytest.mark.asyncio
+    async def test_initialization_timeout_opens_circuit(self, monkeypatch):
+        async def slow_initialization():
+            await asyncio.sleep(1)
+
+        circuit = threading.Event()
+        monkeypatch.setattr(
+            lean_explore_service,
+            "get_lean_service",
+            slow_initialization,
+        )
+        monkeypatch.setattr(
+            lean_explore_service,
+            "_search_circuit_open",
+            circuit,
+        )
+        monkeypatch.setattr(
+            lean_explore_service.Timeouts,
+            "LEAN_EXPLORE_INIT",
+            0.01,
+        )
+
+        assert await lean_explore_service.semantic_search("query") == []
+        assert circuit.is_set()

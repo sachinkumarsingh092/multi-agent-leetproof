@@ -41,6 +41,7 @@ from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, cast
+from config.timeouts import Timeouts
 from utils.message_helpers import lean_block
 
 # Fix Python 3.13 crash: tqdm's TqdmDefaultWriteLock.create_mp_lock() calls
@@ -77,6 +78,8 @@ _executor = ThreadPoolExecutor(max_workers=2, thread_name_prefix="lean_explore")
 _service = None
 _init_lock = asyncio.Lock()
 _init_thread_lock = threading.Lock()
+_search_thread_lock = threading.Lock()
+_search_circuit_open = threading.Event()
 
 _INSTANCE_PREFIX_RE = re.compile(
     r"^\s*(?:@\[[^\]]+\]\s*)*"
@@ -340,6 +343,16 @@ def _lookup_db_result(name: str) -> Optional[LeanExploreResult]:
 def _is_disabled() -> bool:
     """Check if LeanExplore is disabled via environment variable."""
     return os.getenv("DISABLE_LEAN_EXPLORE", "").lower() in ("1", "true", "yes")
+
+
+def _open_search_circuit(reason: str) -> None:
+    """Disable optional semantic search after an infrastructure timeout."""
+    if not _search_circuit_open.is_set():
+        logger.error(
+            "LeanExplore disabled for the remainder of this run: %s",
+            reason,
+        )
+        _search_circuit_open.set()
 
 
 def _check_memory() -> bool:
@@ -637,16 +650,24 @@ def _search_sync(
     query: str, num_results: int, package_filters: Optional[List[str]]
 ) -> List[LeanExploreResult]:
     """Synchronous search implementation."""
+    if _search_circuit_open.is_set():
+        return []
+
     _ensure_service()
 
     if _service is None:
         return []
 
-    response = _service.search(
-        query=query,
-        package_filters=package_filters,
-        limit=num_results,
-    )
+    # LeanExplore's shared Service is not thread-safe. All callers, including
+    # batched asyncio.gather users, must pass through this single-flight gate.
+    with _search_thread_lock:
+        if _search_circuit_open.is_set():
+            return []
+        response = _service.search(
+            query=query,
+            package_filters=package_filters,
+            limit=num_results,
+        )
 
     results = []
     drop_reason_counts: dict[str, int] = {}
@@ -711,15 +732,40 @@ async def semantic_search(
         List of LeanExploreResult objects, sorted by relevance.
         Returns empty list if service is disabled or not available.
     """
+    if _is_disabled() or _search_circuit_open.is_set():
+        return []
+
     try:
+        try:
+            service = await asyncio.wait_for(
+                get_lean_service(),
+                timeout=Timeouts.LEAN_EXPLORE_INIT,
+            )
+        except TimeoutError:
+            _open_search_circuit(
+                f"initialization exceeded {Timeouts.LEAN_EXPLORE_INIT} seconds"
+            )
+            return []
+        if service is None:
+            return []
+
         loop = asyncio.get_running_loop()
-        results = await loop.run_in_executor(
-            _executor,
-            _search_sync,
-            query,
-            num_results,
-            package_filters,
-        )
+        try:
+            results = await asyncio.wait_for(
+                loop.run_in_executor(
+                    _executor,
+                    _search_sync,
+                    query,
+                    num_results,
+                    package_filters,
+                ),
+                timeout=Timeouts.LEAN_EXPLORE_SEARCH,
+            )
+        except TimeoutError:
+            _open_search_circuit(
+                f"search exceeded {Timeouts.LEAN_EXPLORE_SEARCH} seconds"
+            )
+            return []
 
         logger.debug(f"LeanExplore: '{query[:50]}...' -> {len(results)} results")
 

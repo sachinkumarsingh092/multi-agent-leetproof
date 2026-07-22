@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leetproof.dev/schemas/orchestrator-plan-v1.json",
+  "title": "LeetProof Reviewed Project Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "source_file",
+    "source_sha256",
+    "tasks"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"
+    },
+    "source_file": {
+      "type": "string",
+      "pattern": "^[^\\\\/](?!.*(?:^|/)\\.\\.(?:/|$)).*\\.txt$"
+    },
+    "source_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "tasks": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "$ref": "#/$defs/task"
+      }
+    }
+  },
+  "$defs": {
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "input_file",
+        "output_file",
+        "depends_on"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"
+        },
+        "input_file": {
+          "type": "string",
+          "pattern": "^[^\\\\/](?!.*(?:^|/)\\.\\.(?:/|$)).*\\.txt$"
+        },
+        "output_file": {
+          "type": "string",
+          "pattern": "^[^\\\\/](?!.*(?:^|/)\\.\\.(?:/|$)).*\\.lean$"
+        },
+        "depends_on": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"
+          }
+        }
+      }
+    }
+  }
+}

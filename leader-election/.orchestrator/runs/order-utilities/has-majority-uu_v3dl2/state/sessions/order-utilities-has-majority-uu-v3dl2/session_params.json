@@ -1,0 +1,14 @@
+{
+  "provider": "openai",
+  "model": "anthropic-claude-fable-5",
+  "input_file": "/input/spec.txt",
+  "output_file": "/workspace/artifacts/HasMajority.lean",
+  "start": "specgen",
+  "end": null,
+  "max_input_tokens": null,
+  "max_output_tokens": null,
+  "max_total_tokens": null,
+  "max_cost": null,
+  "agent_context": null,
+  "prover_v2_max_iterations": null
+}

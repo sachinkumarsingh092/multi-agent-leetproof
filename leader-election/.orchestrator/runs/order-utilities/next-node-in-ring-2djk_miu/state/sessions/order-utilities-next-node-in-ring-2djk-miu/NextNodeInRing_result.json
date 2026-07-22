@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "session_name": "order-utilities-next-node-in-ring-2djk-miu",
+  "status": "SUCCESS",
+  "pipeline": {
+    "start_stage": "specgen",
+    "end_stage": "verify"
+  },
+  "input": {
+    "file": "/input/spec.txt"
+  },
+  "contract": {
+    "file": ".lloom/sessions/order-utilities-next-node-in-ring-2djk-miu/contracts/NextNodeInRing.contract.lean",
+    "sha256": "57c803b8672999268d5ac2ce62327667bd8eef3148a8538a9e58b53560b0fa10"
+  },
+  "implementation": {
+    "file": "/workspace/artifacts/NextNodeInRing.lean",
+    "sha256": "118bbf68819db223edfa7f2fc018d30b8e2524833ecd2c9f782c067c7956a74e"
+  },
+  "verification": {
+    "testcases_passed": true,
+    "pbt_status": "ADDED_AND_PASSED",
+    "proof_status": "PASSED",
+    "goals_proven": 3,
+    "goals_partial": 0,
+    "goals_total": 3
+  },
+  "stages": {
+    "specgen": {
+      "status": "SUCCESS",
+      "typechecks": true
+    },
+    "codegen": {
+      "status": "SUCCESS",
+      "testcases_passed": true,
+      "judge_verdict": "PASS",
+      "pbt_status": "ADDED_AND_PASSED"
+    },
+    "invgen": {
+      "status": "SUCCESS",
+      "judge_verdict": "PASS"
+    },
+    "verify": {
+      "status": "SUCCESS",
+      "typechecks": true,
+      "goals_proven": 3,
+      "goals_partial": 0,
+      "goals_total": 3
+    }
+  },
+  "error": null
+}

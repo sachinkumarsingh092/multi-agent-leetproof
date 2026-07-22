@@ -1,22 +1,5 @@
 from pathlib import Path
 
-from agents.spec_state import CoachVerdict
-from utils.analytics.spec_generation import (
-    AttemptMeta as SpecAttemptMeta,
-    AttemptOutcome as SpecAttemptOutcome,
-    CoachReview,
-    PBTSummary,
-    SpecPBTResult,
-    TypecheckSummary as SpecTypecheckSummary,
-    query_attempt_meta as query_spec_attempt_meta,
-    query_coach_reviews,
-    query_pbt_summaries,
-    query_typecheck_summaries as query_spec_typecheck_summaries,
-    write_attempt_meta as write_spec_attempt_meta,
-    write_coach_review,
-    write_pbt_summary,
-    write_typecheck_summary as write_spec_typecheck_summary,
-)
 from utils.analytics.store import AnalyticsStore
 from utils.analytics.velvet_invariant_inferrer import (
     AttemptMeta as InferrerAttemptMeta,
@@ -63,90 +46,6 @@ from utils.analytics.lean_synth_and_verify import (
     write_proof_summary,
     write_typecheck_summary as write_lean_synth_typecheck_summary,
 )
-
-
-def test_spec_generation_analytics_write_and_read(monkeypatch, tmp_path: Path):
-    store = AnalyticsStore(tmp_path / "analytics.sqlite")
-    monkeypatch.setattr(
-        "utils.analytics.spec_generation.get_analytics_store",
-        lambda: store,
-    )
-
-    attempt_log = store.attempt("spec_generation", 1, session_name="session-spec")
-
-    write_spec_typecheck_summary(
-        attempt_log,
-        SpecTypecheckSummary(
-            build_passed=False,
-            has_axiom=False,
-            sorry_count=1,
-            extracted_goals_typecheck_passed=True,
-            spec="full spec file",
-            specs_section="section Specs\n...\nend Specs",
-            impl_section="section Impl\n...\nend Impl",
-            testcases_section="section TestCases\n...\nend TestCases",
-        ),
-        text="typecheck log",
-    )
-    write_pbt_summary(
-        attempt_log,
-        PBTSummary(enabled=True, result=SpecPBTResult.POSTCOND_BUG),
-        text="pbt detail",
-    )
-    write_coach_review(
-        attempt_log,
-        CoachReview(verdict=CoachVerdict.REJECT, score=17),
-        text="coach feedback",
-    )
-    write_spec_attempt_meta(
-        attempt_log,
-        SpecAttemptMeta(
-            final_outcome=SpecAttemptOutcome.PBT_BUG,
-            file_path="test.lean",
-            reasoning_level=None,
-            error_message="pbt detail",
-        ),
-    )
-
-    typecheck_rows = query_spec_typecheck_summaries("session-spec")
-    assert len(typecheck_rows) == 1
-    assert typecheck_rows[0].attempt_no == 1
-    assert typecheck_rows[0].payload == SpecTypecheckSummary(
-        build_passed=False,
-        has_axiom=False,
-        sorry_count=1,
-        extracted_goals_typecheck_passed=True,
-        spec="full spec file",
-        specs_section="section Specs\n...\nend Specs",
-        impl_section="section Impl\n...\nend Impl",
-        testcases_section="section TestCases\n...\nend TestCases",
-    )
-    assert typecheck_rows[0].text_content == "typecheck log"
-
-    pbt_rows = query_pbt_summaries("session-spec")
-    assert len(pbt_rows) == 1
-    assert pbt_rows[0].payload == PBTSummary(
-        enabled=True,
-        result=SpecPBTResult.POSTCOND_BUG,
-    )
-    assert pbt_rows[0].text_content == "pbt detail"
-
-    coach_rows = query_coach_reviews("session-spec")
-    assert len(coach_rows) == 1
-    assert coach_rows[0].payload == CoachReview(
-        verdict=CoachVerdict.REJECT,
-        score=17,
-    )
-    assert coach_rows[0].text_content == "coach feedback"
-
-    meta_rows = query_spec_attempt_meta("session-spec")
-    assert len(meta_rows) == 1
-    assert meta_rows[0].payload == SpecAttemptMeta(
-        final_outcome=SpecAttemptOutcome.PBT_BUG,
-        file_path="test.lean",
-        reasoning_level=None,
-        error_message="pbt detail",
-    )
 
 
 def test_programmer_analytics_write_and_read(monkeypatch, tmp_path: Path):

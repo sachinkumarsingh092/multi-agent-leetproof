@@ -1,0 +1,7 @@
+Build a small pure numeric utility library with exactly three methods:
+
+1. absoluteDifference: return the non-negative distance between two natural numbers.
+2. clamp: constrain a natural number to an inclusive lower and upper bound.
+3. isEven: report whether a natural number is divisible by two.
+
+The methods are independent, deterministic, and must not use shared mutable state.

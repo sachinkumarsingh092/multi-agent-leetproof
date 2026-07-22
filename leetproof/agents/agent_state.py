@@ -91,3 +91,5 @@ class VelvetAgentState(TypedDict):
     continuation_ctx: Dict[str, str]  # For context injections when we want to pass certain information from one node to another
     previous_attempt_impl: NotRequired[str]  # Prior Impl section before the latest retry
     goal_extraction_grind_gen_param: NotRequired[int | None]  # Custom grind gen used to extract goals after loom_solve, if any
+    formal_contract_file: NotRequired[str]  # Immutable session-scoped contract artifact
+    formal_contract_sha256: NotRequired[str]  # SHA-256 of the immutable contract

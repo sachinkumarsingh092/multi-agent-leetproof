@@ -51,34 +51,19 @@ class ColoredFormatter(logging.Formatter):
         return formatted
 
 
-def _is_tui_enabled() -> bool:
-    """Check if TUI mode is enabled from args (default: True unless --no-tui)."""
-    try:
-        from args import get_args
-
-        args = get_args()
-        return not getattr(args, "no_tui", False)
-    except Exception:
-        return False
-
-
 def setup_logging(
     level: str = "INFO",
     log_file: str = "",
-    tui_mode: bool | None = None,
+    tui_mode: bool = False,
 ) -> None:
     """
     Configure logging for the application.
 
     Args:
-        level: Logging level for console/TUI (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+        level: Logging level for console output (DEBUG, INFO, WARNING, ERROR, CRITICAL)
         log_file: Optional path to log file. If non-empty, file logging is enabled at DEBUG level.
-        tui_mode: If True, skip console handler (TUI will handle display). If None, auto-detect from args.
+        tui_mode: Deprecated compatibility flag. Headless mode always uses console logging.
     """
-    # Auto-detect TUI mode from args if not explicitly provided
-    if tui_mode is None:
-        tui_mode = _is_tui_enabled()
-
     # Create root logger
     root_logger = logging.getLogger()
     root_logger.setLevel(
@@ -88,20 +73,14 @@ def setup_logging(
     # Remove existing handlers
     root_logger.handlers.clear()
 
-    # Only add console handler if NOT in TUI mode
-    if not tui_mode:
-        console_handler = logging.StreamHandler(sys.stdout)
-        console_handler.setLevel(getattr(logging, level.upper()))
-
-        # Create formatter
-        formatter = ColoredFormatter(
-            fmt="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
-            datefmt="%H:%M:%S",
-        )
-        console_handler.setFormatter(formatter)
-
-        # Add handler to root logger
-        root_logger.addHandler(console_handler)
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setLevel(getattr(logging, level.upper()))
+    formatter = ColoredFormatter(
+        fmt="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+        datefmt="%H:%M:%S",
+    )
+    console_handler.setFormatter(formatter)
+    root_logger.addHandler(console_handler)
 
     # Add file handler if log_file provided
     if log_file:
@@ -119,29 +98,6 @@ def setup_logging(
             root_logger.addHandler(file_handler)
         except Exception as e:
             print(f"Warning: Could not setup file logging: {e}", file=sys.stderr)
-
-    # If TUI mode, add the TUI log handler
-    if tui_mode:
-        try:
-            from tui.log_handler import get_tui_log_handler
-
-            tui_handler = get_tui_log_handler()
-            tui_handler.setLevel(getattr(logging, level.upper()))
-            root_logger.addHandler(tui_handler)
-        except ImportError:
-            # TUI module not available, fall back to console
-            if not any(
-                isinstance(h, logging.StreamHandler) for h in root_logger.handlers
-            ):
-                console_handler = logging.StreamHandler(sys.stdout)
-                console_handler.setLevel(getattr(logging, level.upper()))
-                formatter = ColoredFormatter(
-                    fmt="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
-                    datefmt="%H:%M:%S",
-                )
-                console_handler.setFormatter(formatter)
-                root_logger.addHandler(console_handler)
-
 
 def get_logger(name: str) -> logging.Logger:
     """

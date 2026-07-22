@@ -21,10 +21,6 @@ from utils.analytics.lean_synth_and_verify import (
 def test_list_query_operations_includes_agent_helpers():
     operations = {operation.name: operation for operation in list_query_operations()}
     assert "general.query_records" in operations
-    assert "spec_generation.query_typecheck_summaries" in operations
-    assert "spec_generation.query_pbt_summaries" in operations
-    assert "spec_generation.query_coach_reviews" in operations
-    assert "spec_generation.query_attempt_meta" in operations
     assert "velvet_programmer.query_typecheck_summaries" in operations
     assert "velvet_programmer.query_judge_results" in operations
     assert "velvet_programmer.query_attempt_meta" in operations
@@ -99,7 +95,7 @@ def test_execute_general_query_operation_filters_rows(monkeypatch, tmp_path: Pat
         lambda: store,
     )
 
-    attempt_one = store.attempt("spec_generation", 1, session_name="session-general")
+    attempt_one = store.attempt("worker", 1, session_name="session-general")
     write_typecheck_summary(
         attempt_one,
         TypecheckSummary(
@@ -113,18 +109,18 @@ def test_execute_general_query_operation_filters_rows(monkeypatch, tmp_path: Pat
         ),
         text="log-a",
     )
-    attempt_two = store.attempt("spec_generation", 2, session_name="session-general")
+    attempt_two = store.attempt("worker", 2, session_name="session-general")
     attempt_two.put("attempt.meta", {"final_outcome": "ok", "reasoning_level": "low"})
 
     result = execute_query_operation(
         "general.query_records",
-        {"session_name": "session-general", "scope": "spec_generation", "attempt_no": 2},
+        {"session_name": "session-general", "scope": "worker", "attempt_no": 2},
     )
 
     assert result == [
         {
             "session_name": "session-general",
-            "scope": "spec_generation",
+            "scope": "worker",
             "attempt_no": 2,
             "key": "attempt.meta",
             "payload": {"final_outcome": "ok", "reasoning_level": "low"},

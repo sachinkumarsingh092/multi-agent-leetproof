@@ -1,0 +1,16 @@
+=== TASK_DESCRIPTION ===
+Implement the core election rule of a bully-style leader election: among the alive node IDs, the node with the highest ID becomes leader.
+
+Input: a list of Nat node IDs (the alive nodes). IDs are distinct but the list is in arbitrary order.
+
+Output: Option Nat. Return some maxId where maxId is the largest ID in the list. Return none if the list is empty (no leader can be elected).
+
+Preconditions: IDs in the list are pairwise distinct. The list may be empty.
+
+Edge cases: empty list returns none; a single-element list returns some of that element; the maximum may appear at any position.
+
+Determinism: the function is pure; identical inputs always produce identical outputs regardless of input order permutations that keep the same multiset (the result depends only on the set of IDs).
+=== METHOD_SIGNATURE ===
+method electLeaderByMaxId (aliveIds : List Nat) : Option Nat
+=== TEST_CASES ===
+{"tests": [{"input": {"aliveIds": [3, 1, 7, 2]}, "expected": 7}, {"input": {"aliveIds": []}, "expected": null}, {"input": {"aliveIds": [42]}, "expected": 42}, {"input": {"aliveIds": [9, 5, 1]}, "expected": 9}, {"input": {"aliveIds": [0, 1]}, "expected": 1}]}
