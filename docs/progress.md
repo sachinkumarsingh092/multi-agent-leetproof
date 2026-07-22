@@ -75,3 +75,4 @@ Property tests are not repeated in the namespaced copy. They have already passed
 - The breaking of the initial natual language spec into further chunks to be verified by the the reviewer still provides bottleneck along with the dependency graph for how it will be picked up by the workers and implemented.
 - The integrator still just accumulates the entire output from the workers rather than working as a glue layer. Solving for that glue is critial.
 - It would be great if we can extend to it handle both liveness and readiness properties like TLA. My focus is to use it on large distributed systems (as a start) and that requires both these properties. I know you folks have been working on veil and I'm interesed in how we can use that here.
+- The final results are all in velvet. I was wondering if we can transpile that somehow to another typed language (like rust or typescript).
