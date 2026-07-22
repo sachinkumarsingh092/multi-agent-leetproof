@@ -67,7 +67,5 @@ are stored under `my-project/.orchestrator/integrations/`. A completed run has
 The planner splits a project into single-method tasks. Docker workers generate
 formal contracts, implementations, tests, property tests, and proofs. The
 result gate checks hashes and rejects incomplete proofs. The integrator places
-accepted modules in separate namespaces and verifies them together.
-
-The current integrator combines verified modules through imports. A verified
-glue module that connects the methods into one application is the next step.
+accepted modules in separate namespaces and verifies them together. 
+The current integrator combines verified modules through imports.
