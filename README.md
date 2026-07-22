@@ -16,6 +16,12 @@ Run from the repository root:
 ```bash
 uv sync --project leetproof
 
+docker pull sachinkumarsingh092/leetproof-worker:0.1.0
+```
+
+To build the worker image locally instead:
+
+```bash
 docker build \
   --file orchestrator/docker/Dockerfile \
   --tag leetproof-worker:1 \
@@ -53,7 +59,7 @@ uv run --project leetproof python -m orchestrator.poc run \
   my-project/plan.json \
   --provider openai \
   --model <model> \
-  --image leetproof-worker:1 \
+  --image sachinkumarsingh092/leetproof-worker:0.1.0 \
   --max-workers 2
 ```
 
