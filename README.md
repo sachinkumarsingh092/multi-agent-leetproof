@@ -1,7 +1,6 @@
-# LeetProof
+# Multi agent leetProof
 
-LeetProof turns a natural language project request into separate verified Lean
-modules and checks that the modules compile together.
+Multi agent leetProof turns a natural language project request into separate verified Lean modules and checks that the modules compile together.
 
 ## Prerequisites
 
@@ -58,14 +57,8 @@ uv run --project leetproof python -m orchestrator.poc run \
   --max-workers 2
 ```
 
-Worker runs are stored under `my-project/.orchestrator/runs/`. Combined results
-are stored under `my-project/.orchestrator/integrations/`. A completed run has
-`"status": "SUCCESS"` in `integration_result.json`.
+Worker runs are stored under `my-project/.orchestrator/runs/`. Combined results are stored under `my-project/.orchestrator/integrations/`. A completed run has `"status": "SUCCESS"` in `integration_result.json`.
 
 ## Current state
 
-The planner splits a project into single-method tasks. Docker workers generate
-formal contracts, implementations, tests, property tests, and proofs. The
-result gate checks hashes and rejects incomplete proofs. The integrator places
-accepted modules in separate namespaces and verifies them together. 
-The current integrator combines verified modules through imports.
+The planner splits a project into single-method tasks. Docker workers generate formal contracts, implementations, tests, property tests, and proofs with the help of the leetproof engine. The result gate checks hashes and rejects incomplete proofs. The integrator places accepted modules in separate namespaces and verifies them together. The current integrator combines verified modules through imports only and doesn't work a glue agent or anything.
